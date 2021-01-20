@@ -13,11 +13,11 @@
       <small class="text-sm">Geolocation</small>
     </router-link>
     <div class="dotBackground dot3" />
-    <button class="dot dot3">
+    <router-link to="/notifications" class="dot dot3">
       <div class="background" />
       <icon-bell />
       <small class="text-sm">Notifications</small>
-    </button>
+    </router-link>
   </div>
 </template>
 
