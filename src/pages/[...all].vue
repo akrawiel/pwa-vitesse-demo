@@ -1,11 +1,8 @@
 <template>
-  <div>
-    {{ t('not-found') }}
+  <div class="w-full h-full flex flex-col items-center justify-center">
+    <div>Page not found</div>
+    <router-link to="/" class="underline font-bold mt-4">
+      Return to home page
+    </router-link>
   </div>
 </template>
-
-<script setup lang='ts'>
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
-</script>
