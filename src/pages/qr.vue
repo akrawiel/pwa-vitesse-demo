@@ -17,9 +17,10 @@
     <component
       :is="isQrCodeLink ? 'a' : 'div'"
       :class="isQrCodeLink ? 'link' : ''"
+      class="leading-normal"
       :href="qrCodeData"
     >
-      <b>{{ qrCodeData ?? '&nbsp;' }}</b>
+      <b>{{ qrCodeData ?? '-' }}</b>
     </component>
     <button class="btn mt-5" @click="toggleScanning">
       {{ isScanning ? 'Stop scanning' : 'Start scanning' }}

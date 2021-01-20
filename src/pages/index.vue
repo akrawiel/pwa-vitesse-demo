@@ -7,11 +7,11 @@
       <small class="text-sm">Scan QR</small>
     </router-link>
     <div class="dotBackground dot2" />
-    <button class="dot dot2">
+    <router-link to="/geolocation" class="dot dot2">
       <div class="background" />
       <icon-marker />
       <small class="text-sm">Geolocation</small>
-    </button>
+    </router-link>
     <div class="dotBackground dot3" />
     <button class="dot dot3">
       <div class="background" />
