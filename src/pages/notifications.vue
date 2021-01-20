@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { get, set } from '@vueuse/core'
+import { get, set, useWebWorkerFn } from '@vueuse/core'
 import { onBeforeUnmount, ref } from 'vue'
 
 const openMessageShown = ref(false)
@@ -73,18 +73,21 @@ onBeforeUnmount(() => {
   )
 })
 
+const { workerFn } = useWebWorkerFn(() => {
+  const notification = new Notification('Test notification', {
+    body: 'This is a test notification from PWA demo app!',
+  })
+})
+
 const requestNewNotification = () => {
   Notification.requestPermission().then(
     (status) => {
-      if (status === 'granted') {
-        const notification = new Notification('Test notification', {
-          body: 'This is a test notification from PWA demo app!',
-        })
+      if (status === 'granted')
+        workerFn()
 
-        notification.onclick = getNotificationHandler(openMessageShown, openMessageTimeoutId)
-        notification.onclose = getNotificationHandler(closeMessageShown, closeMessageTimeoutId)
-        notification.onshow = getNotificationHandler(showMessageShown, showMessageTimeoutId)
-      }
+      // notification.onclick = getNotificationHandler(openMessageShown, openMessageTimeoutId)
+      // notification.onclose = getNotificationHandler(closeMessageShown, closeMessageTimeoutId)
+      // notification.onshow = getNotificationHandler(showMessageShown, showMessageTimeoutId)
     },
   )
 }
