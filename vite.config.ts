@@ -77,6 +77,13 @@ const config: UserConfig = {
           },
         ],
       },
+      workbox: {
+        globDirectory: 'dist',
+        globPatterns: [
+          '**/*.{html,json,js,css}',
+        ],
+        swDest: 'dist/sw.js',
+      },
     }),
   ],
 }
