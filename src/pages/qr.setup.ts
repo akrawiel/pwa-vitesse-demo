@@ -11,7 +11,7 @@ const userMediaConstraints = {
   },
 }
 
-const IndexSetup = () => {
+const QrSetup = () => {
   const videoRef = templateRef<HTMLVideoElement>('video')
   const canvasRef = templateRef<HTMLCanvasElement>('canvas')
 
@@ -130,4 +130,4 @@ const IndexSetup = () => {
   }
 }
 
-export default IndexSetup
+export default QrSetup

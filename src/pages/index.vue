@@ -1,66 +1,83 @@
 <template>
-  <div class="p-4 flex flex-col h-full">
-    <div class="text-center">
-      Scanning QR code
-    </div>
-    <div class="canvasContainer">
-      <canvas ref="canvas" width="320" height="320" />
-      <div v-if="!isScanning" class="canvasOverlay">
-        <div><icon-tap class="inline-block mr-2" />Press "Start scanning"</div>
-        <div><icon-camera class="inline-block mr-2" />Enable camera access</div>
-      </div>
-    </div>
-    <video ref="video" autoplay muted />
-    <div class="mb-4">
-      Scanned code:
-    </div>
-    <component
-      :is="isQrCodeLink ? 'a' : 'div'"
-      :class="isQrCodeLink ? 'link' : ''"
-      :href="qrCodeData"
-    >
-      <b>{{ qrCodeData ?? '&nbsp;' }}</b>
-    </component>
-    <button class="btn mt-5" @click="toggleScanning">
-      {{ isScanning ? 'Stop scanning' : 'Start scanning' }}
+  <div class="mainOverlay">
+    <div class="dotBackground dot1" />
+    <router-link to="/qr" class="dot dot1">
+      <div class="background" />
+      <icon-qr />
+      <small class="text-sm">Scan QR</small>
+    </router-link>
+    <div class="dotBackground dot2" />
+    <button class="dot dot2">
+      <div class="background" />
+      <icon-marker />
+      <small class="text-sm">Geolocation</small>
+    </button>
+    <div class="dotBackground dot3" />
+    <button class="dot dot3">
+      <div class="background" />
+      <icon-bell />
+      <small class="text-sm">Notifications</small>
     </button>
   </div>
 </template>
 
-<script lang="ts">
-import IconCamera from '/@vite-icons/mdi/camera.vue'
-import IconTap from '/@vite-icons/mdi/gesture-tap-button.vue'
-
-import IndexSetup from './index.setup'
-
-export default {
-  components: {
-    IconCamera,
-    IconTap,
-  },
-
-  setup: IndexSetup,
-}
+<script setup>
+import IconQr from '/@vite-icons/mdi/qrcode.vue'
+import IconMarker from '/@vite-icons/mdi/map-marker.vue'
+import IconBell from '/@vite-icons/mdi/bell-alert.vue'
 </script>
 
-<style scoped>
-video {
-  display: none;
+<style lang="scss" scoped>
+@use "sass:math";
+
+.mainOverlay {
+  @apply w-full h-full flex items-center justify-center relative bg-green-400;
 }
 
-canvas {
-  @apply w-full rounded border border-black dark:border-white;
+.dot {
+  @apply rounded-full flex-col flex items-center justify-center text-white dark:text-black
+    text-2xl absolute cursor-pointer z-20;
+
+  transition: background-color 0.2s ease-out;
+
+  .background {
+    @apply w-24 h-24 bg-green-400 rounded-full absolute hover:bg-green-300;
+
+    z-index: 1;
+  }
+
+  svg, small {
+    z-index: 2;
+  }
 }
 
-.canvasContainer {
-  @apply flex flex-1 items-center relative w-full;
+.dotBackground {
+  @apply w-44 h-44 bg-gray-200 dark:bg-gray-700 rounded-full absolute z-10;
 }
 
-.canvasOverlay {
-  @apply z-10 text-center absolute p-4 w-max border border-black dark:border-white rounded;
+@function rotTransform($angle) {
+  @return translate(#{4 * math.cos($angle)}rem, #{4 * math.sin($angle)}rem);
+}
 
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+$maxDots: 3;
+
+@for $i from 1 through $maxDots {
+  $toAngle: (math.$pi / 180) * (($i - 1) * (360 / $maxDots) - 90);
+
+  @keyframes dot#{$i}-animation {
+    0% {
+      transform: translate(0, 0);
+    }
+
+    100% {
+      transform: rotTransform($toAngle);
+    }
+  }
+
+  .dot#{$i} {
+    animation: dot#{$i}-animation 0.5s ease-out 0s 1 normal both;
+    transform: rotTransform($toAngle);
+    transform-origin: center;
+  }
 }
 </style>

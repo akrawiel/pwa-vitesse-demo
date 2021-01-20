@@ -63,7 +63,7 @@ const config: UserConfig = {
       manifest: {
         name: 'PWA Vitesse Demo',
         short_name: 'PWA Vitesse',
-        theme_color: '#ead2ac',
+        theme_color: '#34d399',
         icons: [
           {
             src: '/pwa-192x192.png',
