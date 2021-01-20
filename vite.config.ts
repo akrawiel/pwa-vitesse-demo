@@ -7,7 +7,6 @@ import ViteComponents from 'vite-plugin-components'
 import Markdown from 'vite-plugin-md'
 import Prism from 'markdown-it-prism'
 import { VitePWA } from 'vite-plugin-pwa'
-import VueI18n from '@intlify/vite-plugin-vue-i18n'
 
 const config: UserConfig = {
   alias: {
@@ -62,9 +61,9 @@ const config: UserConfig = {
     // https://github.com/antfu/vite-plugin-pwa
     VitePWA({
       manifest: {
-        name: 'Vitesse',
-        short_name: 'Vitesse',
-        theme_color: '#ffffff',
+        name: 'PWA Vitesse Demo',
+        short_name: 'PWA Vitesse',
+        theme_color: '#ead2ac',
         icons: [
           {
             src: '/pwa-192x192.png',
@@ -79,11 +78,6 @@ const config: UserConfig = {
         ],
       },
     }),
-
-    // https://github.com/intlify/vite-plugin-vue-i18n
-    VueI18n({
-      include: [path.resolve(__dirname, 'locales/**')]
-    })
   ],
 }
 

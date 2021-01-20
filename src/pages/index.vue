@@ -1,11 +1,25 @@
 <template>
-  <div class="p-4">
-    <canvas id="canvas" ref="canvas" width="320" height="240" />
-    <button class="bg-green-400 text-white px-3 py-2 rounded" @click="startScanning">
-      Scan
+  <div class="p-4 flex flex-col h-full">
+    <div class="text-center">
+      Scanning QR code
+    </div>
+    <div class="flex flex-1 items-center">
+      <canvas id="canvas" ref="canvas" width="320" height="320" />
+    </div>
+    <video id="video" ref="video" autoplay muted />
+    <div class="mb-4">
+      Scanned code:
+    </div>
+    <component
+      :is="isQrCodeLink ? 'a' : 'div'"
+      :class="isQrCodeLink ? 'link' : ''"
+      :href="qrCodeData"
+    >
+      <b>{{ qrCodeData ?? 'N/A' }}</b>
+    </component>
+    <button class="btn mt-5" @click="startScanning">
+      {{ isScanning ? 'Stop scanning' : 'Start scanning' }}
     </button>
-    <video id="video" ref="camOut" autoplay muted />
-    <div>Code: {{ qrCodeData ?? 'null' }}</div>
   </div>
 </template>
 
@@ -15,13 +29,20 @@ import { get, set, templateRef, useRafFn } from '@vueuse/core'
 import jsQR, { QRCode } from 'jsqr'
 
 const userMediaConstraints = {
-  video: { width: 320, height: 240, frameRate: 30 },
+  video: {
+    width: 320,
+    height: 320,
+    frameRate: 30,
+    resizeMode: 'crop-and-scale',
+    facingMode: 'environment',
+  },
 }
 
 export default {
   setup() {
-    const camOut = templateRef<HTMLVideoElement>('camOut')
+    const camOut = templateRef<HTMLVideoElement>('video')
     const canvasRef = templateRef<HTMLCanvasElement>('canvas')
+
     const streamRef = ref<MediaStream | null>(null)
     const qrCodeRef = ref<QRCode | null>(null)
 
@@ -50,6 +71,8 @@ export default {
       immediate: false,
     })
 
+    const isScanning = computed(() => Boolean(get(streamRef)))
+
     const deactivateStream = () => {
       if (camOut.value) {
         camOut.value.srcObject = null
@@ -64,10 +87,8 @@ export default {
     watch(
       qrCodeData,
       (qrCodeDataValue) => {
-        if (qrCodeDataValue) {
-          console.info(qrCodeDataValue)
+        if (qrCodeDataValue)
           deactivateStream()
-        }
       },
       {
         immediate: true,
@@ -75,10 +96,11 @@ export default {
     )
 
     watch(
-      streamRef,
-      (stream) => {
-        if (stream) { resume() }
-
+      isScanning,
+      (isScanningValue) => {
+        if (isScanningValue) {
+          resume()
+        }
         else {
           pause()
           canvasRef.value?.getContext('2d')?.clearRect(
@@ -95,7 +117,7 @@ export default {
     )
 
     const startScanning = () => {
-      if (get(streamRef)) {
+      if (get(isScanning)) {
         deactivateStream()
       }
       else {
@@ -108,7 +130,13 @@ export default {
       }
     }
 
+    const isQrCodeLink = computed(
+      () => get(qrCodeData)?.startsWith('http'),
+    )
+
     return {
+      isScanning,
+      isQrCodeLink,
       startScanning,
       qrCodeData,
     }
@@ -122,6 +150,6 @@ export default {
 }
 
 #canvas {
-  border: 1px solid black;
+  @apply w-full rounded border border-black;
 }
 </style>
