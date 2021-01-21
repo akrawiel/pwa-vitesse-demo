@@ -6,6 +6,8 @@
     "build": "cross-env NODE_ENV=production vite-ssg build --script async"
   },
   "dependencies": {
+    "@capacitor/android": "^2.4.6",
+    "@capacitor/ios": "^2.4.6",
     "@vueuse/core": "^4.0.8",
     "nprogress": "^0.2.0",
     "vue": "^3.0.5",
@@ -14,6 +16,8 @@
   },
   "devDependencies": {
     "@antfu/eslint-config-vue": "^0.4.3",
+    "@capacitor/cli": "^2.4.6",
+    "@capacitor/core": "^2.4.6",
     "@iconify/json": "^1.1.284",
     "@tailwindcss/typography": "^0.3.1",
     "@types/nprogress": "^0.2.0",
