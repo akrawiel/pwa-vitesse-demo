@@ -60,9 +60,12 @@ const config: UserConfig = {
 
     // https://github.com/antfu/vite-plugin-pwa
     VitePWA({
+      strategies: 'generateSW',
+      inlineRegister: false,
       manifest: {
         name: 'PWA Vitesse Demo',
         short_name: 'PWA Vitesse',
+        background_color: '#34d399',
         theme_color: '#34d399',
         icons: [
           {
@@ -78,11 +81,9 @@ const config: UserConfig = {
         ],
       },
       workbox: {
-        globDirectory: 'dist',
         globPatterns: [
           '**/*.{html,json,js,css}',
         ],
-        swDest: 'dist/sw.js',
       },
     }),
   ],

@@ -73,21 +73,47 @@ onBeforeUnmount(() => {
   )
 })
 
-const { workerFn } = useWebWorkerFn(() => {
-  const notification = new Notification('Test notification', {
-    body: 'This is a test notification from PWA demo app!',
-  })
-})
-
 const requestNewNotification = () => {
   Notification.requestPermission().then(
     (status) => {
-      if (status === 'granted')
-        workerFn()
+      if (status === 'granted') {
+        // eslint-disable-next-line no-undef
+        const notificationArgs: [string, NotificationOptions] = [
+          'Test notification', {
+            body: 'This is a test notification from PWA demo app!',
+            icon: '/pwa-192x192.png',
+          },
+        ]
 
-      // notification.onclick = getNotificationHandler(openMessageShown, openMessageTimeoutId)
-      // notification.onclose = getNotificationHandler(closeMessageShown, closeMessageTimeoutId)
-      // notification.onshow = getNotificationHandler(showMessageShown, showMessageTimeoutId)
+        if (process.env.NODE_ENV === 'production') {
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification(...notificationArgs).then(
+              () => {
+                set(openMessageShown, true)
+
+                const currentTimeoutId = get(openMessageTimeoutId)
+
+                if (currentTimeoutId)
+                  clearTimeout(currentTimeoutId)
+
+                set(
+                  openMessageTimeoutId,
+                  setTimeout(() => {
+                    set(openMessageShown, false)
+                  }, 5000),
+                )
+              },
+            )
+          })
+        }
+        else {
+          const notification = new Notification(...notificationArgs)
+
+          notification.onclick = getNotificationHandler(openMessageShown, openMessageTimeoutId)
+          notification.onclose = getNotificationHandler(closeMessageShown, closeMessageTimeoutId)
+          notification.onshow = getNotificationHandler(showMessageShown, showMessageTimeoutId)
+        }
+      }
     },
   )
 }

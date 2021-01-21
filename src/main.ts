@@ -19,3 +19,13 @@ export const createApp = ViteSSG(
     }
   },
 )
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(
+      process.env.NODE_ENV === 'production'
+        ? '/sw.js'
+        : '/dist/sw.js',
+    )
+  })
+}

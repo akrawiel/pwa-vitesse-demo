@@ -9,7 +9,8 @@
     "@vueuse/core": "^4.0.8",
     "nprogress": "^0.2.0",
     "vue": "^3.0.5",
-    "vue-router": "^4.0.2"
+    "vue-router": "^4.0.2",
+    "workbox-precaching": "^6.0.2"
   },
   "devDependencies": {
     "@antfu/eslint-config-vue": "^0.4.3",
@@ -34,7 +35,7 @@
     "vite-plugin-components": "^0.6.6",
     "vite-plugin-icons": "^0.2.1",
     "vite-plugin-md": "^0.2.1",
-    "vite-plugin-pwa": "^0.3.4",
+    "vite-plugin-pwa": "^0.3.9",
     "vite-plugin-voie": "^0.7.3",
     "vite-ssg": "^0.3.1",
     "voie-pages": "^0.4.0"
