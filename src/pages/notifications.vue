@@ -86,7 +86,7 @@ const requestNewNotification = () => {
         ]
 
         if (process.env.NODE_ENV === 'production') {
-          navigator.serviceWorker.ready.then((registration) => {
+          window.navigator.serviceWorker.ready.then((registration) => {
             registration.showNotification(...notificationArgs).then(
               () => {
                 set(openMessageShown, true)

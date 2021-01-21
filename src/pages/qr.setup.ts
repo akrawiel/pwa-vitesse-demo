@@ -81,7 +81,7 @@ const QrSetup = () => {
       deactivateStream()
     }
     else {
-      navigator.mediaDevices.getUserMedia(userMediaConstraints).then(
+      window.navigator.mediaDevices.getUserMedia(userMediaConstraints).then(
         (stream) => {
           videoRef.value.srcObject = stream
           set(streamRef, stream)
