@@ -80,11 +80,6 @@ const config: UserConfig = {
           },
         ],
       },
-      workbox: {
-        globPatterns: [
-          '**/*.{html,json,js,css}',
-        ],
-      },
     }),
   ],
 }
