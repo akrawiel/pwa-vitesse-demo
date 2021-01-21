@@ -71,6 +71,9 @@ const QrSetup = () => {
 
   const deactivateStream = () => {
     if (videoRef.value) {
+      streamRef.value?.getVideoTracks().forEach(
+        track => track.stop(),
+      )
       videoRef.value.srcObject = null
       set(streamRef, null)
     }
