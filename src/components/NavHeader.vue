@@ -3,7 +3,7 @@
     <router-link to="/">
       <icon-back />
     </router-link>
-    <div class="ml-2">
+    <div class="ml-3 leading-tight">
       <slot />
     </div>
   </div>
@@ -16,6 +16,6 @@ import IconBack from '/@vite-icons/mdi/arrow-left.vue'
 <style scoped>
 .header {
   @apply text-center w-full bg-green-400 p-2 text-white dark:text-black flex
-    items-center text-xl;
+    items-center text-3xl;
 }
 </style>

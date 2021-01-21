@@ -27,13 +27,8 @@ module.exports = {
   plugins: [typography],
   theme: {
     extend: {
-      colors: {
-        teal: colors.teal,
-      },
-      opacity: {
-        10: '0.1',
-        50: '0.5',
-        85: '0.85',
+      fontFamily: {
+        sans: ['Red Hat Text', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       typography: {
         DEFAULT: {
@@ -41,11 +36,6 @@ module.exports = {
             color: 'inherit',
             a: {
               color: 'inherit',
-              opacity: 0.75,
-              '&:hover': {
-                opacity: 1,
-                color: colors.teal[600],
-              },
             },
             b: {
               color: 'inherit',
