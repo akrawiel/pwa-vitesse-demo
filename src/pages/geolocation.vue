@@ -20,7 +20,7 @@
         <b>{{ currentLocation.longitude ?? '-' }}</b>
       </div>
     </div>
-    <button class="btn mt-5" :disabled="!geolocationSupported" @click="requestCurrentPosition">
+    <button class="btn mt-5" @click="requestCurrentPosition">
       Request current position
     </button>
   </div>
@@ -45,12 +45,8 @@ const currentLocation = reactive<Coords>({
 
 const locationError = ref<string | null>(null)
 
-const geolocationSupported = computed(
-  () => 'geolocation' in navigator,
-)
-
 const requestCurrentPosition = () => {
-  navigator.geolocation.getCurrentPosition(
+  window.navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
       currentLocation.latitude = coords.latitude
       currentLocation.longitude = coords.longitude
