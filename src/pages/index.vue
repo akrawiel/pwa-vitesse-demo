@@ -1,18 +1,15 @@
 <template>
   <div class="mainOverlay">
-    <div class="dotBackground dot1" />
     <router-link to="/qr" class="dot dot1">
       <div class="background" />
       <icon-qr />
       <small class="text-sm">Scan QR</small>
     </router-link>
-    <div class="dotBackground dot2" />
     <router-link to="/geolocation" class="dot dot2">
       <div class="background" />
       <icon-marker />
       <small class="text-sm">Geolocation</small>
     </router-link>
-    <div class="dotBackground dot3" />
     <router-link to="/notifications" class="dot dot3">
       <div class="background" />
       <icon-bell />
@@ -41,8 +38,10 @@ import IconBell from '/@vite-icons/mdi/bell-alert.vue'
   transition: background-color 0.2s ease-out;
 
   .background {
-    @apply w-24 h-24 bg-green-400 rounded-full absolute hover:bg-green-300;
+    @apply w-24 h-24 bg-green-400 rounded-full absolute hover:bg-green-300 border-gray-200
+      shadow-md;
 
+    filter: brightness(1.0275);
     z-index: 1;
   }
 
@@ -51,12 +50,8 @@ import IconBell from '/@vite-icons/mdi/bell-alert.vue'
   }
 }
 
-.dotBackground {
-  @apply w-44 h-44 bg-gray-200 dark:bg-gray-700 rounded-full absolute z-10;
-}
-
-@function rotTransform($angle) {
-  @return translate(#{4 * math.cos($angle)}rem, #{4 * math.sin($angle)}rem);
+@function rotTransform($angle, $radius: 4) {
+  @return translate(#{$radius * math.cos($angle)}rem, #{$radius * math.sin($angle)}rem);
 }
 
 $maxDots: 3;
@@ -76,7 +71,6 @@ $maxDots: 3;
 
   .dot#{$i} {
     animation: dot#{$i}-animation 0.5s ease-out 0s 1 normal both;
-    transform: rotTransform($toAngle);
     transform-origin: center;
   }
 }
