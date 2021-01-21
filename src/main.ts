@@ -20,9 +20,9 @@ export const createApp = ViteSSG(
   },
 )
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register(
+if (typeof globalThis.navigator !== 'undefined' && 'serviceWorker' in globalThis.navigator) {
+  globalThis.addEventListener('load', () => {
+    globalThis.navigator.serviceWorker.register(
       process.env.NODE_ENV === 'production'
         ? '/sw.js'
         : '/dist/sw.js',
