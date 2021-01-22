@@ -1,1 +1,13 @@
-{}
+{
+  "appId": "akrawiel.pwavitessedemo.app",
+  "appName": "pwa-vitesse-demo",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}

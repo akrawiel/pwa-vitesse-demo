@@ -5,11 +5,12 @@
   <div class="p-4 flex flex-col h-full">
     <div class="canvasContainer">
       <canvas ref="canvas" width="320" height="320" />
-      <div v-if="!isScanning" class="canvasOverlay">
+      <div v-if="!isScanning && !scanningStarted" class="canvasOverlay">
         <div><icon-tap class="inline-block mr-2" />Press "Start scanning"</div>
         <div><icon-camera class="inline-block mr-2" />Enable camera access</div>
       </div>
     </div>
+    <div class="flex-1" />
     <video ref="video" autoplay muted />
     <div class="mb-4">
       Scanned code:
@@ -50,11 +51,16 @@ video {
 }
 
 canvas {
-  @apply w-full rounded border border-black dark:border-white;
+  @apply rounded border border-black dark:border-white w-full h-full;
 }
 
 .canvasContainer {
-  @apply flex flex-1 items-center relative w-full;
+  @apply flex flex-1 justify-center items-center relative w-full;
+  position: fixed;
+  left: 0;
+  top: calc(50% - 50vw);
+  width: 100vw;
+  height: 100vw;
 }
 
 .canvasOverlay {

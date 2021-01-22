@@ -29,6 +29,9 @@
 <script setup lang="ts">
 import { set } from '@vueuse/core'
 import { computed, reactive, ref } from 'vue'
+import { Plugins } from '@capacitor/core';
+
+const { Geolocation } = Plugins;
 
 import IconLatitude from '/@vite-icons/mdi/latitude.vue'
 import IconLongitude from '/@vite-icons/mdi/longitude.vue'
@@ -46,19 +49,21 @@ const currentLocation = reactive<Coords>({
 const locationError = ref<string | null>(null)
 
 const requestCurrentPosition = () => {
-  window.navigator.geolocation.getCurrentPosition(
+  Geolocation.getCurrentPosition(
+    {
+      enableHighAccuracy: true,
+    },
+  ).then(
     ({ coords }) => {
       currentLocation.latitude = coords.latitude
       currentLocation.longitude = coords.longitude
       set(locationError, null)
     },
+  ).catch(
     (error) => {
       set(locationError, error.message)
       currentLocation.latitude = null
       currentLocation.longitude = null
-    },
-    {
-      enableHighAccuracy: true,
     },
   )
 }

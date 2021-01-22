@@ -1,4 +1,5 @@
 dependencies:
+  '@capacitor-community/camera-preview': 1.1.3
   '@capacitor/android': 2.4.6_@capacitor+core@2.4.6
   '@capacitor/ios': 2.4.6_@capacitor+core@2.4.6
   '@vueuse/core': 4.0.8_vue@3.0.5
@@ -1014,6 +1015,12 @@ packages:
       to-fast-properties: 2.0.0
     resolution:
       integrity: sha512-lnIX7piTxOH22xE7fDXDbSHg9MM1/6ORnafpJmov5rs0kX5g4BZxeXNJLXsMRiO0U5Rb8/FvMS6xlTnTHvxonQ==
+  /@capacitor-community/camera-preview/1.1.3:
+    dependencies:
+      '@capacitor/core': 2.4.6
+    dev: false
+    resolution:
+      integrity: sha512-cRPAK/aQtzlvfHomQwEYQwZxoIxk8FG0hYVJU4nJKpX8vy92Pr0H5usSIXmqLZrvcDBRHAjSmrQl3G4ReT6OpQ==
   /@capacitor/android/2.4.6_@capacitor+core@2.4.6:
     dependencies:
       '@capacitor/core': 2.4.6
@@ -1044,7 +1051,6 @@ packages:
   /@capacitor/core/2.4.6:
     dependencies:
       tslib: 1.14.1
-    dev: true
     resolution:
       integrity: sha512-3KLSMorCELA5RNRXwHOGlRGuxXaxCEYHC29wOUxObicI2mf14hbMJWylt4QBzNmSqh3/ha7u4/CAZMoJUQR/QA==
   /@capacitor/ios/2.4.6_@capacitor+core@2.4.6:
@@ -4527,7 +4533,7 @@ packages:
       request-promise-core: 1.1.4_request@2.88.2
       stealthy-require: 1.1.1
       tough-cookie: 2.5.0
-    deprecated: request-promise-native has been deprecated because it extends the now deprecated request package, see https://github.com/request/request/issues/3142
+    deprecated: 'request-promise-native has been deprecated because it extends the now deprecated request package, see https://github.com/request/request/issues/3142'
     dev: true
     engines:
       node: '>=0.12.0'
@@ -4557,7 +4563,7 @@ packages:
       tough-cookie: 2.5.0
       tunnel-agent: 0.6.0
       uuid: 3.4.0
-    deprecated: request has been deprecated, see https://github.com/request/request/issues/3142
+    deprecated: 'request has been deprecated, see https://github.com/request/request/issues/3142'
     dev: true
     engines:
       node: '>= 6'
@@ -5155,7 +5161,6 @@ packages:
     resolution:
       integrity: sha512-dRcuzokWhajtZWkQsDVKbWyY+jgcLC5sqJhg2PSgf4ZkH2aHPvaOY8YWGhmjb68b5qqTfasSsDO9k7RUiEmZAw==
   /tslib/1.14.1:
-    dev: true
     resolution:
       integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
   /tsutils/3.19.0_typescript@4.1.3:
@@ -5830,6 +5835,7 @@ packages:
       integrity: sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==
 specifiers:
   '@antfu/eslint-config-vue': ^0.4.3
+  '@capacitor-community/camera-preview': ^1.1.3
   '@capacitor/android': ^2.4.6
   '@capacitor/cli': ^2.4.6
   '@capacitor/core': ^2.4.6

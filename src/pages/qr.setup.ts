@@ -1,5 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { get, set, templateRef, useRafFn, useWebWorkerFn } from '@vueuse/core'
+import { Plugins } from "@capacitor/core"
+import { onBeforeRouteLeave } from "vue-router"
 
 const userMediaConstraints = {
   video: {
@@ -37,14 +39,6 @@ const QrSetup = () => {
     const { height, width } = get(canvasRef) ?? {}
 
     if (ctx) {
-      ctx.drawImage(
-        videoRef.value,
-        0,
-        0,
-        width,
-        height,
-      )
-
       if (detectQRStatus.value !== 'RUNNING') {
         const imageData = ctx.getImageData(0, 0, width, height)
 
@@ -58,6 +52,35 @@ const QrSetup = () => {
   }, {
     immediate: false,
   })
+  
+  const scanningStarted = ref(false)
+
+  const scanFromPreview = () => {
+    const ctx = get(canvasRef)?.getContext('2d')
+    const { height, width } = get(canvasRef) ?? {}
+
+    if (!ctx) return;
+
+    if (scanningStarted.value) {
+      Plugins.CameraPreview.capture({ quality: 60 }).then(b64Data => {
+        const img = new Image()
+        
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, width, height)
+          scanFromPreview()
+        }
+        
+        img.src = `data:image/png;base64,${b64Data.value}`
+      })
+    } else {
+      get(canvasRef)?.getContext('2d')?.clearRect(
+        0,
+        0,
+        get(canvasRef)?.width,
+        get(canvasRef)?.height,
+      )
+    }
+  }
 
   const qrCodeData = computed(
     () => get(qrCodeRef)?.data ?? null,
@@ -71,6 +94,7 @@ const QrSetup = () => {
 
   const deactivateStream = () => {
     if (videoRef.value) {
+      set(scanningStarted, false)
       streamRef.value?.getVideoTracks().forEach(
         track => track.stop(),
       )
@@ -79,7 +103,7 @@ const QrSetup = () => {
     }
   }
 
-  const toggleScanning = () => {
+  const toggleScanningE = () => {
     if (get(isScanning)) {
       deactivateStream()
     }
@@ -92,6 +116,43 @@ const QrSetup = () => {
       )
     }
   }
+  
+  const toggleScanning = () => {
+    set(scanningStarted, !get(scanningStarted))
+  }
+
+  watch(
+    scanningStarted,
+    (scanningStartedValue) => {
+      if (scanningStartedValue) {
+        const canvasContainer = document.querySelector(".canvasContainer")
+        const canvasRect = canvasContainer?.getBoundingClientRect() ?? {}
+        Plugins.CameraPreview.start({
+          x: 0,
+          y: Math.floor(canvasRect.top) + Math.floor((canvasContainer?.offsetTop ?? 0) / 2),
+          height: Math.floor(window.screen.width),
+          width: Math.floor(window.screen.width),
+          toBack: false, position: 'rear' }).then(
+          () => {
+            scanFromPreview()
+            resumeScanning()
+          }
+        )
+      } else {
+        Plugins.CameraPreview.stop()
+        pauseScanning()
+        get(canvasRef)?.getContext('2d')?.clearRect(
+          0,
+          0,
+          get(canvasRef)?.width,
+          get(canvasRef)?.height,
+        )
+      }
+    },
+    {
+      immediate: true
+    }
+  )
 
   watch(
     qrCodeData,
@@ -125,7 +186,12 @@ const QrSetup = () => {
     },
   )
 
+  onBeforeRouteLeave(() => {
+    set(scanningStarted, false)
+  })
+
   return {
+    scanningStarted,
     isScanning,
     isQrCodeLink,
     toggleScanning,

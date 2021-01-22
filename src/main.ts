@@ -7,6 +7,8 @@ import { ViteSSG } from 'vite-ssg'
 import installPlugins from './plugins'
 import App from './App.vue'
 
+import '@capacitor-community/camera-preview'
+
 export const createApp = ViteSSG(
   App,
   { routes },

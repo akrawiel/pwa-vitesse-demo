@@ -29,6 +29,8 @@
 <script setup lang="ts">
 import { get, set, useWebWorkerFn } from '@vueuse/core'
 import { onBeforeUnmount, ref } from 'vue'
+import { Plugins } from '@capacitor/core';
+const { LocalNotifications } = Plugins;
 
 const openMessageShown = ref(false)
 // eslint-disable-next-line no-undef
@@ -74,47 +76,25 @@ onBeforeUnmount(() => {
 })
 
 const requestNewNotification = () => {
-  Notification.requestPermission().then(
-    (status) => {
-      if (status === 'granted') {
-        // eslint-disable-next-line no-undef
-        const notificationArgs: [string, NotificationOptions] = [
-          'Test notification', {
-            body: 'This is a test notification from PWA demo app!',
-            icon: '/pwa-192x192.png',
-          },
-        ]
+  LocalNotifications.requestPermission().then(
+    ({ granted }) => {
+      if (!granted) return
 
-        if (process.env.NODE_ENV === 'production') {
-          window.navigator.serviceWorker.ready.then((registration) => {
-            registration.showNotification(...notificationArgs).then(
-              () => {
-                set(openMessageShown, true)
-
-                const currentTimeoutId = get(openMessageTimeoutId)
-
-                if (currentTimeoutId)
-                  clearTimeout(currentTimeoutId)
-
-                set(
-                  openMessageTimeoutId,
-                  setTimeout(() => {
-                    set(openMessageShown, false)
-                  }, 5000),
-                )
-              },
-            )
-          })
-        }
-        else {
-          const notification = new Notification(...notificationArgs)
-
-          notification.onclick = getNotificationHandler(openMessageShown, openMessageTimeoutId)
-          notification.onclose = getNotificationHandler(closeMessageShown, closeMessageTimeoutId)
-          notification.onshow = getNotificationHandler(showMessageShown, showMessageTimeoutId)
-        }
-      }
-    },
+      LocalNotifications.schedule({
+        notifications: [{
+          id: 1,
+          title: "Test notification",
+          body: "Test notification body",
+          schedule: { at: new Date(Date.now() + 500) },
+          sound: null,
+          attachments: null,
+          actionTypeId: "",
+          extra: null
+        }]
+      }).catch(
+        error => console.warn(error)
+      )
+    }
   )
 }
 </script>
